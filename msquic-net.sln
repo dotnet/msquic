@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30524.135
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4BD10F47-23DF-4E97-B305-F430E635AA0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Net.Experimental.MsQuic", "src\System.Net.Experimental.MsQuic\System.Net.Experimental.MsQuic.csproj", "{EB965205-C305-45BE-BDC5-B8F6F9BD5DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Net.MsQuic.Transport", "src\System.Net.MsQuic.Transport\System.Net.MsQuic.Transport.csproj", "{EB965205-C305-45BE-BDC5-B8F6F9BD5DC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{26788691-360A-467A-B0A3-554532E77ECD}"
 	ProjectSection(SolutionItems) = preProject
