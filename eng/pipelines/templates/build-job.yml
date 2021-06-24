@@ -70,8 +70,9 @@ jobs:
       - checkout: self
         submodules: recursive
       
-      - pwsh: .\eng\addCmakeToPath.ps1
-        displayName: Add CMake to path
+      - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
+        - pwsh: .\eng\addCmakeToPath.ps1
+          displayName: Add CMake to path
 
       - script: $(_buildScript)
                 -ci
