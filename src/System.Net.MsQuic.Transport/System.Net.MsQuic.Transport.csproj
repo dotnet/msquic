@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <IsPackable>true</IsPackable>
+        <IsShipping>false</IsShipping>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     </PropertyGroup>
 
