@@ -7,8 +7,8 @@ $RootDir = Split-Path $PSScriptRoot -Parent
 $NuGetPath = Join-Path $RootDir "nuget"
 
 # Well-known location for clog packages.
-$ClogDownloadUrl = "https://github.com/microsoft/CLOG/releases/download/v0.1.2"
-$ClogVersion = "0.1.2"
+$ClogVersion = "0.2.0"
+$ClogDownloadUrl = "https://github.com/microsoft/CLOG/releases/download/v$ClogVersion"
 $toolsLocation = "$RootDir\src\msquic\artifacts\dotnet-tools"
 
 function Install-ClogTool {
@@ -18,22 +18,26 @@ function Install-ClogTool {
     $NuGetFile = Join-Path $NuGetPath $NuGetName
     try {
         if (!(Test-Path $NuGetFile)) {
-            Write-Host "Downloading $NuGetName"
+            Write-Host "Downloading $ClogDownloadUrl/$NuGetName"
             Invoke-WebRequest -Uri "$ClogDownloadUrl/$NuGetName" -OutFile $NuGetFile
         }
-        
-        
-        dotnet tool update --tool-path $toolsLocation --add-source $NuGetPath $ToolName
-        
-        if (!$?) { exit 1 }
-
+        Write-Host "Installing: $NuGetName"
+        dotnet tool update --global --add-source $NuGetPath $ToolName
     } catch {
-        Write-Warning "Clog could not be installed. Building with logs will not work"
-        Write-Warning $_
+        if ($FailOnError) {
+            Write-Error $_
+        }
+        $err = $_
+        $MessagesAtEnd.Add("$ToolName could not be installed. Building with logs will not work")
+        $MessagesAtEnd.Add($err.ToString())
     }
 }
 
 Install-ClogTool "Microsoft.Logging.CLOG"
-Install-ClogTool "Microsoft.Logging.CLOG2Text.Windows"
+if ($IsWindows) {
+    Install-ClogTool "Microsoft.Logging.CLOG2Text.Windows"
+} elseif ($IsLinux) {
+    Install-ClogTool "Microsoft.Logging.CLOG2Text.Lttng"
+}
 
 echo "##vso[task.prependpath]$toolsLocation"
