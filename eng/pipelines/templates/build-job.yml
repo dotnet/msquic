@@ -73,6 +73,8 @@ jobs:
       - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
         - pwsh: .\eng\addCmakeToPath.ps1
           displayName: Add CMake to path
+        - pwsh: .\src\msquic\scripts\prepare-machine.ps1 -Configuration Build
+          displayName: Prepare machine
 
       - script: $(_buildScript)
                 -ci
