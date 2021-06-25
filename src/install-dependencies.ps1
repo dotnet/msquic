@@ -10,6 +10,12 @@ $NuGetPath = Join-Path $RootDir "nuget"
 $ClogVersion = "0.2.0"
 $ClogDownloadUrl = "https://github.com/microsoft/CLOG/releases/download/v$ClogVersion"
 $toolsLocation = "$RootDir\src\msquic\artifacts\dotnet-tools"
+$installLocal = $false
+
+if ($env:AGENT_NAME -ne "")
+{
+    $installLocal = $true
+}
 
 function Install-ClogTool {
     param($ToolName)
@@ -22,7 +28,14 @@ function Install-ClogTool {
             Invoke-WebRequest -Uri "$ClogDownloadUrl/$NuGetName" -OutFile $NuGetFile
         }
         Write-Host "Installing: $NuGetName"
-        dotnet tool update --global --add-source $NuGetPath $ToolName
+        if ($installLocal)
+        {
+            dotnet tool update --tool-path $toolsLocation --add-source $NuGetPath $ToolName
+        }
+        else
+        {
+            dotnet tool update --global --add-source $NuGetPath $ToolName
+        }
     } catch {
         if ($FailOnError) {
             Write-Error $_
@@ -40,4 +53,7 @@ if ($IsWindows) {
     Install-ClogTool "Microsoft.Logging.CLOG2Text.Lttng"
 }
 
-echo "##vso[task.prependpath]$toolsLocation"
+if ($installLocal)
+{
+    echo "##vso[task.prependpath]$toolsLocation"
+}
