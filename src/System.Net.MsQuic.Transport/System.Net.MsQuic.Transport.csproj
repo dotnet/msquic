@@ -6,13 +6,14 @@
         <IsPackable>true</IsPackable>
         <IsShipping>false</IsShipping>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <VersionPrefix>6.0.0</VersionPrefix>
     </PropertyGroup>
 
     <PropertyGroup>
         <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddBuildOutputToPackageCore</TargetsForTfmSpecificContentInPackage>
     </PropertyGroup>
 
-    <Target Name="_AddBuildOutputToPackageCore" DependsOnTargets="Publish" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
+    <Target Name="_AddBuildOutputToPackageCore" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
         <ItemGroup>
             <TfmSpecificPackageFile
                 Include="..\msquic\artifacts\bin\windows\x86_Release_schannel\msquic.dll"
@@ -28,10 +29,6 @@
                 Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x64/native/"/>
         </ItemGroup>
-    </Target>
-
-    <Target Name="Install-dependencies" BeforeTargets="BeforeBuild">
-
     </Target>
 
     <Target Name="Build-native" AfterTargets="Build">
