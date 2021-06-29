@@ -70,7 +70,7 @@ stages:
       runTests: false
       container: 
         registry: mcr
-        image: ubuntu-18.04-20210531091552-047508b
+        image: ubuntu-18.04-msquic-20210628192849-7f197aa
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:

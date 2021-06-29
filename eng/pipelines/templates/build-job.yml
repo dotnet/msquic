@@ -47,7 +47,7 @@ jobs:
         - _buildScript: build.cmd
 
         - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
-          - _buildScript: echo
+          - _buildScript: build.sh
         
         - _testBuildArg: ''
         - ${{ if eq(parameters.runTests, true) }}:
