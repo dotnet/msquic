@@ -9,7 +9,7 @@ $NuGetPath = Join-Path $RootDir "nuget"
 # Well-known location for clog packages.
 $ClogVersion = "0.2.0"
 $ClogDownloadUrl = "https://github.com/microsoft/CLOG/releases/download/v$ClogVersion"
-$toolsLocation = "$RootDir\src\msquic\artifacts\dotnet-tools"
+$toolsLocation = "$RootDir/src/msquic/artifacts/dotnet-tools"
 $installLocal = $false
 
 if ($env:AGENT_NAME -ne "")
