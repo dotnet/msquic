@@ -32,7 +32,6 @@
     </Target>
 
     <Target Name="Build-native" AfterTargets="Build">
-
         <Exec
             Command="pwsh scripts/build.ps1 -Config Release -Arch x64"
             WorkingDirectory="../msquic"/>
