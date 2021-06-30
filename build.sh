@@ -13,4 +13,5 @@ while [[ -h $source ]]; do
 done
 
 scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
+export PATH=$PATH:$scriptroot/src/msquic/artifacts/dotnet-tools
 "$scriptroot/eng/common/build.sh" -warnAsError:$false --build --restore $@

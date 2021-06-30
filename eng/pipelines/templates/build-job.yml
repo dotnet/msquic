@@ -47,8 +47,8 @@ jobs:
         - _buildScript: build.cmd
 
         - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
-          - _buildScript: build.sh
-        
+          - _buildScript: ./build.sh
+
         - _testBuildArg: ''
         - ${{ if eq(parameters.runTests, true) }}:
           - _testBuildArg: -test
@@ -69,7 +69,7 @@ jobs:
       steps:
       - checkout: self
         submodules: recursive
-      
+
       - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
         - pwsh: .\eng\addCmakeToPath.ps1
           displayName: Add CMake to path
