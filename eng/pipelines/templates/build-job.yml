@@ -59,7 +59,6 @@ jobs:
           - group: DotNet-Symbol-Server-Pats
           - _SignType: real
           - _officialBuildArgs: -publish
-                                /p:DotNetSignType=$(_SignType)
                                 /p:TeamName=$(_TeamName)
                                 /p:OfficialBuildId=$(Build.BuildNumber)
                                 /p:DotNetPublishUsingPipelines=true
@@ -67,6 +66,7 @@ jobs:
                                 /p:DotNetSymbolServerTokenSymWeb=$(symweb-symbol-server-pat)
           - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
             - _signingArgs: -sign
+                            /p:DotNetSignType=$(_SignType)
 
       steps:
       - checkout: self
