@@ -48,6 +48,7 @@ jobs:
 
         - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
           - _buildScript: ./build.sh
+          - _outputPath: ../../artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
 
         - _testBuildArg: ''
         - ${{ if eq(parameters.runTests, true) }}:
@@ -83,4 +84,10 @@ jobs:
                 $(_signingArgs)
                 $(_officialBuildArgs)
                 /p:TargetPlatform=${{ parameters.archType }}
-        displayName: Build and Test
+        displayName: Build and Publish
+
+      - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
+        - script: ./scripts/make-packages.sh -o $(_outputPath)
+          displayName: Publish
+          workingDirectory: src/msquic
+
