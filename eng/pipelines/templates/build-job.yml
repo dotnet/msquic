@@ -54,17 +54,19 @@ jobs:
           - _testBuildArg: -test
 
         - _officialBuildArgs: ''
+        - _signingArgs: ''
         - ${{ if eq(parameters.isOfficialBuild, true) }}:
           - group: DotNet-Symbol-Server-Pats
           - _SignType: real
-          - _officialBuildArgs: -sign
-                                -publish
-                                /p:DotNetSignType=$(_SignType)
+          - _officialBuildArgs: -publish
                                 /p:TeamName=$(_TeamName)
                                 /p:OfficialBuildId=$(Build.BuildNumber)
                                 /p:DotNetPublishUsingPipelines=true
                                 /p:DotNetSymbolServerTokenMsdl=$(microsoft-symbol-server-pat)
                                 /p:DotNetSymbolServerTokenSymWeb=$(symweb-symbol-server-pat)
+          - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
+            - _signingArgs: -sign
+                            /p:DotNetSignType=$(_SignType)
 
       steps:
       - checkout: self
@@ -78,6 +80,7 @@ jobs:
                 -ci
                 -c $(_BuildConfig)
                 $(_testBuildArg)
+                $(_signingArgs)
                 $(_officialBuildArgs)
                 /p:TargetPlatform=${{ parameters.archType }}
         displayName: Build and Test
