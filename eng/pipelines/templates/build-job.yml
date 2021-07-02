@@ -15,7 +15,7 @@ jobs:
     helixRepo: dotnet/runtimelab
     pool: ${{ parameters.pool }}
     enablePublishBuildArtifacts: true
-    enablePublishBuildAssets: true
+    enablePublishBuildAssets: ${{ eq(parameters.osGroup, 'Windows_NT') }}
     enablePublishUsingPipelines: true
     enableMicrobuild: true
     graphFileGeneration:
