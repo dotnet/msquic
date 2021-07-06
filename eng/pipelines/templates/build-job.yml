@@ -89,5 +89,12 @@ jobs:
       - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
         - script: ./scripts/make-packages.sh -o $(_outputPath)
           displayName: Publish
-          workingDirectory: src/msquic
-
+          workingDirectory: src/msquics
+        - task: PublishBuildArtifacts@1
+          displayName: Push Linux Packages
+          inputs:
+            PathtoPublish: $(_outputPath)
+            PublishLocation: Container
+            ArtifactName: LinuxPackages
+          continueOnError: ${{ parameters.continueOnError }}
+          condition: succeeded()
