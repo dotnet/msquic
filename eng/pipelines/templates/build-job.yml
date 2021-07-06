@@ -94,7 +94,7 @@ jobs:
         - script: /usr/bin/find artifacts
           displayName: Check packages
 
-        - script: /usr/bin/find . -mame *.rpm
+        - script: /usr/bin/find $(_outputPath)
           displayName: Check packages2
 
         - task: PublishBuildArtifacts@1
