@@ -48,7 +48,7 @@ jobs:
 
         - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
           - _buildScript: ./build.sh
-          - _outputPath: artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
+          - _outputPath: $(Build.SourcesDirectory)/artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
 
         - _testBuildArg: ''
         - ${{ if eq(parameters.runTests, true) }}:
@@ -87,15 +87,9 @@ jobs:
         displayName: Build and Publish
 
       - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
-        - script: ./scripts/make-packages.sh -o ../../$(_outputPath)
+        - script: ./scripts/make-packages.sh -o $(_outputPath)
           displayName: Make Linux packages
           workingDirectory: src/msquic
-
-        - script: /usr/bin/find artifacts
-          displayName: Check packages
-
-        - script: /usr/bin/find $(_outputPath)
-          displayName: Check packages2
 
         - task: PublishBuildArtifacts@1
           displayName: Push Linux Packages
