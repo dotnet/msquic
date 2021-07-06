@@ -91,6 +91,12 @@ jobs:
           displayName: Make Linux packages
           workingDirectory: src/msquic
 
+        - script: /usr/bin/find artifacts
+          displayName: Check packages
+
+        - script: /usr/bin/find . -mame *.rpm
+          displayName: Check packages2
+
         - task: PublishBuildArtifacts@1
           displayName: Push Linux Packages
           inputs:
