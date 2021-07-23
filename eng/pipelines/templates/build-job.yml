@@ -87,7 +87,7 @@ jobs:
         displayName: Build and Publish
 
       - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
-        - script: ./scripts/make-packages.sh -o $(_outputPath)
+        - script: ./scripts/make-packages.sh -output $(_outputPath)
           displayName: Make Linux packages
           workingDirectory: src/msquic
 
