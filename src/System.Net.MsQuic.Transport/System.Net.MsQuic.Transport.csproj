@@ -33,10 +33,10 @@
 
     <Target Name="Build-native" AfterTargets="Build">
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x64"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch x64 $(ExtraMsquicArgs)"
             WorkingDirectory="../msquic"/>
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x86"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch x86 $(ExtraMsquicArgs)"
             WorkingDirectory="../msquic"/>
     </Target>
 </Project>
