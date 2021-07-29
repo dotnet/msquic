@@ -73,8 +73,9 @@ jobs:
       - checkout: self
         submodules: recursive
 
-      - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
-        displayName: Install native dependencies
+      - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
+        - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
+          displayName: Install native dependencies
 
       - script: $(_buildScript)
                 -ci
