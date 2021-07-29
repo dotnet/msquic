@@ -73,9 +73,8 @@ jobs:
       - checkout: self
         submodules: recursive
 
-      - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
-        - pwsh: .\eng\addCmakeToPath.ps1
-          displayName: Add CMake to path
+      - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
+        displayName: Install native dependencies
 
       - script: $(_buildScript)
                 -ci
