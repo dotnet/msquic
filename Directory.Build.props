@@ -15,7 +15,7 @@
     <!-- Set this property to false if you don't want to use the runtime
           framework version defined in Versions.props -->
     <UseCustomRuntimeVersion>false</UseCustomRuntimeVersion>
-    <RuntimeFrameworkVersion Condition="$(UseCustomRuntimeVersion)">$(MicrosoftNETCoreAppVersion)</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion Condition="$(UseCustomRuntimeVersion)">$(MicrosoftNETCoreAppRuntimewinx64Version)</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
