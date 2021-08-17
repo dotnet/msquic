@@ -4,8 +4,8 @@
     <FrameworkReference Update="Microsoft.NETCore.App"
                         Condition="'$(UseCustomRuntimeVersion)' == 'true' and '$(TargetFrameworkIdentifier)' == '.NETCoreApp'"
                         TargetFramework="$(TargetFramework)"
-                        RuntimeFrameworkVersion="$(MicrosoftNETCoreAppVersion)"
-                        TargetingPackVersion="$(MicrosoftNETCoreAppVersion)" />
+                        RuntimeFrameworkVersion="$(MicrosoftNETCoreAppRuntimewinx64Version)"
+                        TargetingPackVersion="$(MicrosoftNETCoreAppRefVersion)" />
   </ItemGroup>
 
   <Import Condition="'$(IsTestProject)' == 'true'" Project="$(RepositoryEngineeringDir)testing\runsettings.targets" />
