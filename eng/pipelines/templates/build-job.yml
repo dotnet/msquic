@@ -12,7 +12,7 @@ jobs:
 - template: /eng/common/templates/jobs/jobs.yml
   parameters:
     enableTelemetry: true
-    helixRepo: dotnet/runtimelab
+    helixRepo: dotnet/msquic
     pool: ${{ parameters.pool }}
     enablePublishBuildArtifacts: true
     enablePublishBuildAssets: ${{ eq(parameters.osGroup, 'Windows_NT') }}
@@ -76,6 +76,10 @@ jobs:
       - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
           displayName: Install native dependencies
+
+      - ${{ if eq(parameters.osGroup, 'OSX') }}:
+        - script:  sed -i .ORI '/cmake/d'  global.json
+          displayName: Remove cmake for macOS
 
       - script: $(_buildScript)
                 -ci
