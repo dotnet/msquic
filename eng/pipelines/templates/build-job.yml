@@ -83,6 +83,8 @@ jobs:
       - ${{ if eq(parameters.osGroup, 'OSX') }}:
         - script:  sed -i .ORI '/cmake/d'  global.json
           displayName: Remove cmake for macOS
+        - script: gem install fpm
+          displayName: Install fpm
 
       - script: $(_buildScript)
                 -ci
@@ -93,7 +95,7 @@ jobs:
                 /p:TargetPlatform=${{ parameters.archType }}
         displayName: Build and Publish
 
-      - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
+      - ${{ if eq(parameters.osGroup, 'Linux') }}:
         - script: ./scripts/make-packages.sh -output $(_outputPath)
           displayName: Make Linux packages
           workingDirectory: src/msquic
@@ -104,4 +106,17 @@ jobs:
             PathtoPublish: $(_outputPath)
             PublishLocation: Container
             ArtifactName: LinuxPackages
+          condition: succeeded()
+
+      - ${{ if eq(parameters.osGroup, 'OSX') }}:
+        - script: ./scripts/make-packages.sh -output $(_outputPath)
+          displayName: Make macOS packages
+          workingDirectory: src/msquic
+
+        - task: PublishBuildArtifacts@1
+          displayName: Push macOS Packages
+          inputs:
+            PathtoPublish: $(_outputPath)
+            PublishLocation: Container
+            ArtifactName: macOSPackages
           condition: succeeded()
