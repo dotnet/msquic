@@ -51,7 +51,7 @@ stages:
   jobs:
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
-      osGroup: Windows_NT
+      osGroup: Windows
       archType: x64
       runTests: false
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
@@ -82,7 +82,7 @@ stages:
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
-      osGroup: OSX
+      osGroup: macOS
       archType: x64
       runTests: false
       pool:
