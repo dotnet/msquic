@@ -50,7 +50,7 @@ jobs:
           - _buildScript: ./build.sh
           - _outputPath: $(Build.SourcesDirectory)/artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
 
-        - ${{ if ne(parameters.osGroup, 'OSX') }}:
+        - ${{ if eq(parameters.osGroup, 'OSX') }}:
           - OPENSSL_ROOT_DIR: /usr/local/opt/openssl@1.1
 
         - _testBuildArg: ''
