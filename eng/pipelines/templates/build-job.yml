@@ -12,10 +12,10 @@ jobs:
 - template: /eng/common/templates/jobs/jobs.yml
   parameters:
     enableTelemetry: true
-    helixRepo: dotnet/runtimelab
+    helixRepo: dotnet/msquic
     pool: ${{ parameters.pool }}
     enablePublishBuildArtifacts: true
-    enablePublishBuildAssets: ${{ eq(parameters.osGroup, 'Windows_NT') }}
+    enablePublishBuildAssets: ${{ eq(parameters.osGroup, 'Windows') }}
     enablePublishUsingPipelines: true
     enableMicrobuild: true
     graphFileGeneration:
@@ -46,9 +46,12 @@ jobs:
       variables:
         - _buildScript: build.cmd
 
-        - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
+        - ${{ if ne(parameters.osGroup, 'Windows') }}:
           - _buildScript: ./build.sh
           - _outputPath: $(Build.SourcesDirectory)/artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
+
+        - ${{ if eq(parameters.osGroup, 'macOS') }}:
+          - OPENSSL_ROOT_DIR: /usr/local/opt/openssl@1.1
 
         - _testBuildArg: ''
         - ${{ if eq(parameters.runTests, true) }}:
@@ -65,7 +68,7 @@ jobs:
                                 /p:DotNetPublishUsingPipelines=true
                                 /p:DotNetSymbolServerTokenMsdl=$(microsoft-symbol-server-pat)
                                 /p:DotNetSymbolServerTokenSymWeb=$(symweb-symbol-server-pat)
-          - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
+          - ${{ if eq(parameters.osGroup, 'Windows') }}:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
 
@@ -73,9 +76,16 @@ jobs:
       - checkout: self
         submodules: recursive
 
-      - ${{ if eq(parameters.osGroup, 'Windows_NT') }}:
+      - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
           displayName: Install native dependencies
+
+      - ${{ if eq(parameters.osGroup, 'macOS') }}:
+        # use cmake from Brew (that may be different)
+        - script:  sed -i .ORI '/cmake/d'  global.json
+          displayName: Remove cmake for macOS
+        - script: gem install fpm
+          displayName: Install fpm
 
       - script: $(_buildScript)
                 -ci
@@ -86,15 +96,15 @@ jobs:
                 /p:TargetPlatform=${{ parameters.archType }}
         displayName: Build and Publish
 
-      - ${{ if ne(parameters.osGroup, 'Windows_NT') }}:
+      - ${{ if ne(parameters.osGroup, 'Windows') }}:
         - script: ./scripts/make-packages.sh -output $(_outputPath)
-          displayName: Make Linux packages
+          displayName: Make Unix packages
           workingDirectory: src/msquic
 
         - task: PublishBuildArtifacts@1
-          displayName: Push Linux Packages
+          displayName: Push Unix Packages
           inputs:
             PathtoPublish: $(_outputPath)
             PublishLocation: Container
-            ArtifactName: LinuxPackages
+            ArtifactName: UnsignedUnixPackages
           condition: succeeded()
