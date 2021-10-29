@@ -9,8 +9,8 @@
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>Latest</LangVersion>
     <IsPackable>true</IsPackable>
-    <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration>7</PreReleaseVersionIteration>
+    <PreReleaseVersionLabel></PreReleaseVersionLabel>
+    <PreReleaseVersionIteration></PreReleaseVersionIteration>
 
     <!-- Set this property to false if you don't want to use the runtime
           framework version defined in Versions.props -->
