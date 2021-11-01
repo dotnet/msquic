@@ -1,12 +1,12 @@
 
 [This](https://github.com/microsoft/msquic) repo is thin wrapper around https://github.com/microsoft/msquic . Main reason is packaging and release management so .NET runtime. 
 At this moment, there are two branches:
--	Release/6.0 to supply MsQquic for .NET 6.0 release. (msquic 1.7)
+-	Release/6.0 to supply MsQuic for .NET 6.0 release. (msquic 1.7)
 -	Main branch to pick up feature work and general improvements to feed main branch of runtime (msquic 1.8)
 
 In both cases, the build will create signed NuGet packages to be consumed by Windows and unsigned Linux packages. 
-Neither one is meant for direct consumption. Windows package is consumed  by .NET runtime and msquic.dll is part of runtime distribution on Windows.
-There is currently no automated workflow but signed Linux packages are published on https://packages.microsoft.com/. Linux users should use packages from there either directly or via their package manager. 
+Neither one is meant for direct consumption. Windows package is consumed by .NET runtime and msquic.dll is part of runtime distribution on Windows.
+For Linux, there is currently no automated workflow. Signed packages are manually published on https://packages.microsoft.com/. Linux users should use packages from there either directly or via their package manager. 
 
 
 **Build & Updates**
@@ -24,9 +24,9 @@ git checkout main (or what ever branch or tag)
 cd ../..
 git add src/msquic
 ```
-At this point full build is recommended and changes should be staged for PR. Once can use `git log` to check msquic has exerted content. Also GitHub UI shows the actual changes instead of just updated directory like the command line tool. 
+At this point, full build is recommended and changes should be staged for PR. You can use `git log` to check whether msquic has changed. Also GitHub UI shows the actual changes instead of just updated directory like the command line tool. 
 
-When changes are submitted, official build will kick in and it will produce updated Nuget package. To see latest and history look at https://dev.azure.com/dnceng/public/_packaging?_a=package&feed=dotnet6-transport&package=System.Net.MsQuic.Transport
+When changes are submitted, official build will kick in and it will produce updated NuGet package. To see the latest package and its history look at https://dev.azure.com/dnceng/public/_packaging?_a=package&feed=dotnet6-transport&package=System.Net.MsQuic.Transport
 
 The packages _should_ flow to runtime repo via DARC e.g. there should eventually be maestro PR to updated reference. 
 It is also always possible to update the runtime directly with change similar to https://github.com/dotnet/runtime/pull/57541
