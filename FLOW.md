@@ -11,7 +11,7 @@ For Linux, there is currently no automated workflow. Signed packages are manuall
 
 **Build & Updates**
 
-To build this repro, make sure you checkout appropriate branch _RECURSIVELY_. MsQuic code is pulled in as submodule as well as it uses submodules internally. The build currently depends on PowerShell as well as it needs all the prerequisities required by MsQuic. 
+To build this repro, make sure you checkout appropriate branch _RECURSIVELY_. MsQuic code is pulled in as submodule as well as it uses submodules internally. The build currently depends on PowerShell as well as it needs all the prerequisities required by MsQuic. (https://github.com/microsoft/msquic/blob/main/docs/BUILD.md)
 
 To build it, run top-level `build` script. That essentially calls `Build-native` from [src/System.Net.MsQuic.Transport/System.Net.MsQuic.Transport.csproj](https://github.com/dotnet/msquic/blob/main/src/System.Net.MsQuic.Transport/System.Net.MsQuic.Transport.csproj)
 To see what is going on with official Azure pipeline you can check [eng/pipelines/msquic.yml](https://github.com/dotnet/msquic/blob/main/eng/pipelines/msquic.yml)
@@ -32,3 +32,8 @@ The packages _should_ flow to runtime repo via DARC e.g. there should eventually
 It is also always possible to update the runtime directly with change similar to https://github.com/dotnet/runtime/pull/57541
 
 There is currently no process for updating Linux packages. 
+
+**Updating test images**
+
+On Linux for now we only run tests in cotainers. To pick up change, one need to rebuild appropriate container and update pipeline configuration to point at update image. To rebuild container _without_ submitting changes, one needs to do manual pipeline run (internal) with added `noCache = true` variable. 
+
