@@ -11,6 +11,6 @@
     "cmake": "3.21.0"
   },
   "msbuild-sdks": {
-    "Microsoft.DotNet.Arcade.Sdk": "7.0.0-beta.22153.1"
+    "Microsoft.DotNet.Arcade.Sdk": "7.0.0-beta.22154.3"
   }
 }
