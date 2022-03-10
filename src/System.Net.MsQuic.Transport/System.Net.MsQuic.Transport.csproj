@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <IsPackable>true</IsPackable>
         <IsShipping>false</IsShipping>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-        <VersionPrefix>6.0.0</VersionPrefix>
     </PropertyGroup>
 
     <PropertyGroup>
