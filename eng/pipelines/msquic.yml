@@ -87,12 +87,12 @@ stages:
       runTests: false
       pool:
         name: NetCore1ESPool-Public
-        vmImage: 'Build.Ubuntu.1804.Amd64.open'
+        vmImage: '1es-ubuntu-2004-open'
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          vmImage: 'Build.Ubuntu.1804.Amd64'
+          vmImage: '1es-ubuntu-2004'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
