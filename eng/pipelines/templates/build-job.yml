@@ -76,6 +76,12 @@ jobs:
       - checkout: self
         submodules: recursive
 
+      - ${{ if eq(parameters.archType, 'arm64') }}:
+        - script: apt-get update
+        - script: apt-get install qemu binfmt-support qemu-user-static docker
+        - script: update-binfmts --enable qemu-arm
+        - script: update-binfmts --enable qemu-arm64
+
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
           displayName: Install native dependencies
