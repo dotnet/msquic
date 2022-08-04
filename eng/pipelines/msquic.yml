@@ -87,15 +87,11 @@ stages:
       runTests: false
       pool:
         name: NetCore1ESPool
-        demands: ImageOverride -equals Build.Ubuntu.2004.x64
+        vmImage: 'ubuntu-20.04'
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals Build.Ubuntu.2004.x64
-      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-        pool:
-          vmImage: 'ubuntu-20.04'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
