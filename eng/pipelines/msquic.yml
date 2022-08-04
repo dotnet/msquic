@@ -88,7 +88,6 @@ stages:
       pool:
         name NetCore1ESPool
         demands: ImageOverride -equals Build.Ubuntu.2004.x64
-
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
