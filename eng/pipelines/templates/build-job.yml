@@ -77,8 +77,7 @@ jobs:
         submodules: recursive
 
       - ${{ if eq(parameters.archType, 'arm64') }}:
-        - script: id -a
-        - script: sudo apt-get update && sudo apt-get install qemu binfmt-support qemu-user-static docker
+        - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker
         - script: sudo update-binfmts --enable qemu-arm && sudo update-binfmts --enable qemu-arm64
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
