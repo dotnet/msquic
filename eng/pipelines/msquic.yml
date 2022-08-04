@@ -62,7 +62,7 @@ stages:
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
           vmImage: 'windows-latest'
-          
+
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
       osGroup: Linux
@@ -86,7 +86,7 @@ stages:
       archType: arm64
       runTests: false
       pool:
-        name NetCore1ESPool
+        name: NetCore1ESPool
         demands: ImageOverride -equals Build.Ubuntu.2004.x64
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
