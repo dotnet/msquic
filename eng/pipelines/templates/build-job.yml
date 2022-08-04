@@ -6,6 +6,7 @@ parameters:
   pool: {}
   isOfficialBuild: false
   runTests: true
+  docker: ''
 
 jobs:
 
@@ -78,7 +79,8 @@ jobs:
 
       - ${{ if eq(parameters.archType, 'arm64') }}:
         - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker
-        - script: sudo update-binfmts --enable qemu-arm && sudo update-binfmts --enable qemu-arm64
+        - script: sudo update-binfmts --enable qemu-arm && sudo update-binfmts --enable qemu-aarch64
+        docker: docker run -ti mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a --volume /:/
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
@@ -91,7 +93,7 @@ jobs:
         - script: gem install fpm
           displayName: Install fpm
 
-      - script: $(_buildScript)
+      - script: $(docker) $(_buildScript)
                 -ci
                 -c $(_BuildConfig)
                 $(_testBuildArg)
