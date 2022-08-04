@@ -86,12 +86,13 @@ stages:
       archType: arm64
       runTests: false
       pool:
-        name: NetCore1ESPool
-        vmImage: 'ubuntu-20.04'
+        name: NetCore1ESPool-Public
+        vmImage: '1es-ubuntu-2004-open'
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
+          vmImage: '1es-ubuntu-2004'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
