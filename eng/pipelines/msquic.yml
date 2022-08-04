@@ -87,12 +87,12 @@ stages:
       runTests: false
       pool:
         name: NetCore1ESPool-Public
-        vmImage: '1es-ubuntu-2004-open'
+        demands: ImageOverride -equals build.ubuntu.1804.amd64.open
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          vmImage: '1es-ubuntu-2004'
+          demands: ImageOverride -equals build.ubuntu.1804.amd64
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
