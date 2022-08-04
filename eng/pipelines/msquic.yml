@@ -85,17 +85,18 @@ stages:
       osGroup: Linux
       archType: arm64
       runTests: false
-      container: 
-        registry: mcr
-        image: ubuntu-18.04-arm64v8-20220803130954-bfcd90a
+      pool:
+        name NetCore1ESPool
+        demands: ImageOverride -equals Build.Ubuntu.2004.x64
+
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals Build.Ubuntu.1804.Arm64
+          demands: ImageOverride -equals Build.Ubuntu.2004.x64
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          vmImage: 'ubuntu-18.04'
+          vmImage: 'ubuntu-20.04'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
