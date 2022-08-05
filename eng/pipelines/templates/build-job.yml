@@ -73,7 +73,7 @@ jobs:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
         - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && /msquic/build.sh "
+          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && /msquic/build.sh " && echo
 
       steps:
       - checkout: self
