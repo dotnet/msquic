@@ -100,7 +100,7 @@ jobs:
         displayName: Build binaries
 
       - ${{ if ne(parameters.osGroup, 'Windows') }}:
-        - script: ./scripts/make-packages.sh -output $(_outputPath)
+        - script: ./scripts/make-packages.sh -arch $(parameters.archType) -output $(_outputPath)
           displayName: Make Unix packages
           workingDirectory: src/msquic
 
