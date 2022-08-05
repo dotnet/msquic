@@ -73,7 +73,7 @@ jobs:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
         - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a /msquic//build.sh
+          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a /apt-get update && apt-get install -y wget && /msquic/build.sh
 
       steps:
       - checkout: self
@@ -82,10 +82,6 @@ jobs:
       - ${{ if eq(parameters.archType, 'arm64') }}:
         - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker
         - script: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes 
-        - script: docker run -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a id -a
-        - script: docker run -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a  apt-get update
-        - script: docker run -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a  apt-get install wget
-
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
