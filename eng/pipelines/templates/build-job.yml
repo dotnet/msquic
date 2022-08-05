@@ -73,7 +73,7 @@ jobs:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
         - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget curl && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && /msquic/build.sh " && echo
+          - _buildScript: docker run --platform linux/arm64 --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget curl && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && curl -o /tmp/cmake.tgz  https://cmake.org/files/v3.23/cmake-3.23.1-linux-aarch64.tar.gz && tar xfz /tmp/cmake.tgz  -C /usr/local/bin/ && /msquic/build.sh " && echo
 
       steps:
       - checkout: self
@@ -82,6 +82,7 @@ jobs:
       - ${{ if eq(parameters.archType, 'arm64') }}:
         - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker ruby-dev
         - script: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes 
+          displayName: Setup QEMU
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
