@@ -82,8 +82,8 @@ jobs:
       - ${{ if eq(parameters.archType, 'arm64') }}:
         - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker
         - script: sudo update-binfmts --enable qemu-arm && sudo update-binfmts --enable qemu-aarch64
-        - script: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a uname -a
-        - script: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a mount
+        - script: docker run --volume /:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a uname -a
+        - script: docker run --volume $PWD:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a mount
         - script: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a ls -al /msquic
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
