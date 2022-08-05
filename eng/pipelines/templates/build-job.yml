@@ -94,6 +94,8 @@ jobs:
         - script: gem install fpm
           displayName: Install fpm
 
+      - script: echo Docker $(_docker) is `pwd` out
+
       - script: $(_docker) $(_buildScript)
                 -ci
                 -c $(_BuildConfig)
