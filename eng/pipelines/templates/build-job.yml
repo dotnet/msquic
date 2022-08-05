@@ -73,7 +73,7 @@ jobs:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
         - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _buildScript: docker run --volume ${{BUILD_REPOSITORY_LOCALPATH}}:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a /msquic//build.sh
+          - _buildScript: docker run --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a /msquic//build.sh
 
       steps:
       - checkout: self
