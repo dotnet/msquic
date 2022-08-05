@@ -91,7 +91,7 @@ jobs:
         # use cmake from Brew (that may be different)
         - script:  sed -i.ORI '/cmake/d'  global.json
           displayName: Remove cmake for macOS
-        - script: gem install fpm
+        - script: sudo gem install fpm
           displayName: Install fpm
 
       - script: echo Docker $(_docker) is `pwd` out
