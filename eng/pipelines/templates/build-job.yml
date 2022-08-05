@@ -72,9 +72,9 @@ jobs:
           - ${{ if eq(parameters.osGroup, 'Windows') }}:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
-          - ${{ if eq(parameters.archType, 'arm64') }}:
-            - _buildScript: ocker run -ti mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a --volume /:/ ./build.sh 
-            - _docker: docker run -ti mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a --volume /:/
+        - ${{ if eq(parameters.archType, 'arm64') }}:
+          - _buildScript: docker run -ti mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a --volume /:/ ./build.sh 
+          - _docker: docker run -ti mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a --volume /:/
 
       steps:
       - checkout: self
