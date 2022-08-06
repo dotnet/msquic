@@ -14,17 +14,17 @@
     <Target Name="_AddBuildOutputToPackageCore" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
         <ItemGroup>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x86_Release_schannel\msquic.dll"
+                Include="..\msquic\artifacts\bin\windows\x86_$(Configuration)_schannel\msquic.dll"
                 PackagePath="runtimes/win10-x86/native/"/>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x86_Release_schannel\msquic.pdb"
+                Include="..\msquic\artifacts\bin\windows\x86_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x86/native/"/>
 
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.dll"
+                Include="..\msquic\artifacts\bin\windows\x64_$(Configuration)_schannel\msquic.dll"
                 PackagePath="runtimes/win10-x64/native/"/>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.pdb"
+                Include="..\msquic\artifacts\bin\windows\x64_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x64/native/"/>
         </ItemGroup>
     </Target>
