@@ -36,6 +36,6 @@
         <!-- Legacy reasons. Should be fixed.  -->
         <Exec
             Command="pwsh scripts/build.ps1 -Config Release -Arch x96 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
-            WorkingDirectory="../msquic" Condition="'$(TargetOS) == 'windows'"/>
+            WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
     </Target>
 </Project>
