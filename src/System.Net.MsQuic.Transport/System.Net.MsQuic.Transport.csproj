@@ -31,10 +31,7 @@
 
     <Target Name="Build-native" AfterTargets="Build">
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x64 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
-            WorkingDirectory="../msquic"/>
-        <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic"/>
     </Target>
 </Project>

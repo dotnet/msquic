@@ -72,9 +72,9 @@ jobs:
           - ${{ if eq(parameters.osGroup, 'Windows') }}:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
-        - _buildargs: -ci -c $(_BuildConfig) $(_testBuildArg) $(_signingArgs) $(_officialBuildArgs) /p:TargetPlatform=${{ parameters.archType }}
+        - _buildargs: -ci -c $(_BuildConfig) $(_testBuildArg) $(_signingArgs) $(_officialBuildArgs) /p:TargetArchitecture=${{ parameters.archType }}
         - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _buildScript: docker run --platform linux/arm64 --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget curl && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && curl -o /tmp/cmake.tgz  https://cmake.org/files/v3.23/cmake-3.23.1-linux-aarch64.tar.gz && tar xfz /tmp/cmake.tgz  -C /usr/local/bin/ && /msquic/build.sh $(_buildargs)" && echo
+          - _buildScript: docker run --platform linux/arm64 --volume $BUILD_REPOSITORY_LOCALPATH:/msquic -t mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-arm64v8-20220803130954-bfcd90a bash -c "apt-get update && apt-get install -y wget curl && curl -L -o /tmp/pwsh.tgz https://github.com/PowerShell/PowerShell/releases/download/v7.2.5/powershell-7.2.5-linux-arm64.tar.gz && tar xfz /tmp/pwsh.tgz -C /usr/local/bin/ && curl -o /tmp/cmake.tgz  https://cmake.org/files/v3.23/cmake-3.23.1-linux-aarch64.tar.gz && tar xfz /tmp/cmake.tgz --strip 1  -C /usr/local/bin/ && /msquic/build.sh $(_buildargs)" && echo
 
       steps:
       - checkout: self
