@@ -31,11 +31,11 @@
 
     <Target Name="Build-native" AfterTargets="Build">
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            Command="pwsh scripts/build.ps1 --Parallel 0  -Config Release -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic"/>
         <!-- Legacy reasons. Should be fixed.  -->
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x96 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
     </Target>
 </Project>
