@@ -8,7 +8,7 @@ usage()
 
 OS=$(uname)
 ARCH=$(uname -m)
-PKGARCH=$(ARCH)
+PKGARCH=${ARCH}
 FPM=`which fpm` 2>/dev/null
 CONFIG=Release
 NAME=libmsquic
