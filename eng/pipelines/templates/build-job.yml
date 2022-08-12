@@ -83,7 +83,7 @@ jobs:
       - ${{ if eq(parameters.archType, 'arm64') }}:
         - script: ls -al /crossrootfs
         - script: cat /etc/os-release
-        - script apt-get update && apt-get install ruby-dev
+        - script apt-get update && apt-get install ruby-dev rpm
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
