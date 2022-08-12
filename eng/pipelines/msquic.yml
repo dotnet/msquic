@@ -85,6 +85,7 @@ stages:
       osGroup: Linux
       archType: arm64
       runTests: false
+      container: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-cross-arm64-20220808192756-6e40d49
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
           name: NetCore1ESPool-Public
