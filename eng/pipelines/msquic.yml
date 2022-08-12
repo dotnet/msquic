@@ -94,7 +94,9 @@ stages:
         pool:
           name: NetCore1ESPool-Internal
           demands: ImageOverride -equals build.ubuntu.1804.amd64
-      container: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-cross-arm64-20220808192756-6e40d49
+      container:
+        registry: mcr.microsoft.com/dotnet-buildtools/prereqs
+        image: ubuntu-18.04-cross-arm64-20220808192756-6e40d49
 
   #- template: /eng/pipelines/templates/build-job.yml
   #  parameters:
