@@ -81,9 +81,8 @@ jobs:
         submodules: recursive
 
       - ${{ if eq(parameters.archType, 'arm64') }}:
-        - script: sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static docker ruby-dev
-        - script: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes 
-          displayName: Setup QEMU
+        - script: ls -al /cross
+        - script: cat /etc/os-release
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
