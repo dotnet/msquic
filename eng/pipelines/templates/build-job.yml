@@ -95,7 +95,7 @@ jobs:
         - script: sudo gem install fpm
           displayName: Install fpm
 
-      - script: $(_buildScript) $(_buildargs)
+      - script: CC=clang-9 CCX=clang++-9 (_buildScript) $(_buildargs)
         displayName: Build binaries
 
       - ${{ if ne(parameters.osGroup, 'Windows') }}:
