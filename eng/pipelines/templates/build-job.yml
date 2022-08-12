@@ -81,7 +81,7 @@ jobs:
         submodules: recursive
 
       - ${{ if eq(parameters.archType, 'arm64') }}:
-        - script: ls -al /cross
+        - script: ls -al /crossrootfs
         - script: cat /etc/os-release
 
       - ${{ if eq(parameters.osGroup, 'Windows') }}:

@@ -30,7 +30,7 @@
     </Target>
 
     <PropertyGroup>
-    <ExtraMsquicArgs>-SysRoot /cross/arm64</ExtraMsquicArgs>
+    <ExtraMsquicArgs>-SysRoot /crossrootfs/arm64</ExtraMsquicArgs>
     </PropertyGroup>
     <Target Name="Build-native" AfterTargets="Build">
         <Exec IgnoreStandardErrorWarningFormat="true"
