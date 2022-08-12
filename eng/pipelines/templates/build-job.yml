@@ -95,7 +95,7 @@ jobs:
         - script: sudo gem install fpm
           displayName: Install fpm
 
-      - script: CC=clang-9 CCX=clang++-9 CFLAGS="--target=aarch64-linux-gnu" $(_buildScript) $(_buildargs)
+      - script: CC=clang-9 CXX=clang++-9 CFLAGS="--target=aarch64-linux-gnu --sysroot=/crossrootfs/arm64" LDFLAGS='-L/crossrootfs/arm64/lib -L/lib -L/usr/lib/aarch64-linux-gnu -L/crossrootfs/arm64/usr/lib/aarch64-linux-gnu' $(_buildScript) $(_buildargs)
         displayName: Build binaries
 
       - ${{ if ne(parameters.osGroup, 'Windows') }}:
