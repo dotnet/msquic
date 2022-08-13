@@ -91,8 +91,6 @@ jobs:
 
       - ${{ if or(eq(parameters.osGroup, 'macOS'), eq(parameters.archType, 'arm64')) }}:
         # use cmake from Brew (that may be different)
-        - script:  sed -i.ORI '/cmake/d'  global.json
-          displayName: Remove cmake for macOS
         - script: sudo gem install fpm
           displayName: Install fpm
 
