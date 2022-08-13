@@ -49,36 +49,36 @@ stages:
 - stage: build
   displayName: Build
   jobs:
-  #- template: /eng/pipelines/templates/build-job.yml
-  #  parameters:
-  #    osGroup: Windows
-  #    archType: x64
-  #    runTests: false
-  #    ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  #      isOfficialBuild: true
-  #      pool:
-  #        name: NetCore1ESPool-Internal
-  #        demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019
-  #    ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-  #      pool:
-  #        vmImage: 'windows-latest'
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
+      osGroup: Windows
+      archType: x64
+      runTests: false
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
+        pool:
+          name: NetCore1ESPool-Internal
+          demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019
+      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        pool:
+          vmImage: 'windows-latest'
 
-  #- template: /eng/pipelines/templates/build-job.yml
-  #  parameters:
-  #    osGroup: Linux
-  #    archType: x64
-  #    runTests: false
-  #    container: 
-  #      registry: mcr
-  #      image: ubuntu-18.04-msquic-20210813173420-e5ef247
-  #    ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  #      isOfficialBuild: true
-  #      pool:
-  #        name: NetCore1ESPool-Internal
-  #        demands: ImageOverride -equals Build.Ubuntu.1804.Amd64
-  #    ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-  #      pool:
-  #        vmImage: 'ubuntu-18.04'
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
+      osGroup: Linux
+      archType: x64
+      runTests: false
+      container: 
+        registry: mcr
+        image: ubuntu-18.04-msquic-20210813173420-e5ef247
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
+        pool:
+          name: NetCore1ESPool-Internal
+          demands: ImageOverride -equals Build.Ubuntu.1804.Amd64
+      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        pool:
+          vmImage: 'ubuntu-18.04'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
@@ -116,13 +116,13 @@ stages:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
         image: ubuntu-18.04-cross-arm-20220813000503-6e40d49
 
-  #- template: /eng/pipelines/templates/build-job.yml
-  #  parameters:
-  #    osGroup: macOS
-  #    archType: x64
-  #    runTests: false
-  #    pool:
-  #      vmImage: 'macOS-10.15'
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
+      osGroup: macOS
+      archType: x64
+      runTests: false
+      pool:
+        vmImage: 'macOS-10.15'
 
 # Publish and validation steps. Only run in official builds
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:

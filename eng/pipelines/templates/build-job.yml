@@ -82,10 +82,6 @@ jobs:
       - checkout: self
         submodules: recursive
 
-      - ${{ if eq(parameters.archType, 'arm64') }}:
-        - script: ls -al /crossrootfs
-        - script: id -a
-
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
           displayName: Install native dependencies

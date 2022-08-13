@@ -30,11 +30,11 @@
     </Target>
 
     <PropertyGroup>
-    <ExtraMsquicArgs>-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
+    <ExtraMsquicArgs Condition="'$(TargetArch)' == 'arm' or $(TargetArch)' == 'arm64'">-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
     </PropertyGroup>
     <Target Name="Build-native" AfterTargets="Build">
         <Exec IgnoreStandardErrorWarningFormat="true"
-            Command="pwsh scripts/build.ps1 --Parallel 1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic"/>
         <!-- Legacy reasons. Should be fixed.  -->
         <Exec
