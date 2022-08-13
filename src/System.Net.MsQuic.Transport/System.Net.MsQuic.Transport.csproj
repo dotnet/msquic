@@ -30,7 +30,7 @@
     </Target>
 
     <PropertyGroup>
-    <ExtraMsquicArgs Condition="'$(TargetArch)' == 'arm' or '$(TargetArch)' == 'arm64'">-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
+    <ExtraMsquicArgs Condition="'$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64'">-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
     </PropertyGroup>
     <Target Name="Build-native" AfterTargets="Build">
         <Exec IgnoreStandardErrorWarningFormat="true"
