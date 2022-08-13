@@ -96,7 +96,7 @@ stages:
           demands: ImageOverride -equals build.ubuntu.1804.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
-        image: ubuntu-18.04-cross-arm64-20220808192756-6e40d49
+        image: ubuntu-18.04-cross-arm64-20220813000503-6e40d49
 
   #- template: /eng/pipelines/templates/build-job.yml
   #  parameters:
