@@ -87,7 +87,6 @@ jobs:
           displayName: Install native dependencies
 
       - ${{ if eq(parameters.osGroup, 'macOS') }}:
-        # use cmake from Brew (that may be different)
         - script: sudo gem install fpm
           displayName: Install fpm
 
