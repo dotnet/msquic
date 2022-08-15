@@ -88,12 +88,33 @@ stages:
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
           name: NetCore1ESPool-Public
-          demands: ImageOverride -equals build.ubuntu.1804.amd64.open
+          demands: ImageOverride -equals 1es-ubuntu-2004-open
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
           demands: ImageOverride -equals build.ubuntu.1804.amd64
+      container:
+        registry: mcr.microsoft.com/dotnet-buildtools/prereqs
+        image: ubuntu-18.04-cross-arm64-20220813000503-6e40d49
+
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
+      osGroup: Linux
+      archType: arm
+      runTests: false
+      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        pool:
+          name: NetCore1ESPool-Public
+          demands: ImageOverride -equals 1es-ubuntu-2004-open
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
+        pool:
+          name: NetCore1ESPool-Internal
+          demands: ImageOverride -equals build.ubuntu.1804.amd64
+      container:
+        registry: mcr.microsoft.com/dotnet-buildtools/prereqs
+        image: ubuntu-18.04-cross-arm-20220813000503-6e40d49
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
