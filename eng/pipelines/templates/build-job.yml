@@ -71,6 +71,12 @@ jobs:
           - ${{ if eq(parameters.osGroup, 'Windows') }}:
             - _signingArgs: -sign
                             /p:DotNetSignType=$(_SignType)
+        - _crossBuild: ''
+        - _buildargs: -ci -c $(_BuildConfig) $(_testBuildArg) $(_signingArgs) $(_officialBuildArgs) /p:TargetArchitecture=${{ parameters.archType }}
+        - ${{ if eq(parameters.archType, 'arm64') }}:
+          - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=aarch64-linux-gnu --sysroot=/crossrootfs/arm64" LDFLAGS='-L/crossrootfs/arm64/lib -L/crossrootfs/arm64/usr/lib/aarch64-linux-gnu'
+        - ${{ if eq(parameters.archType, 'arm') }}:
+          - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=arm-linux-gnueabihf --sysroot=/crossrootfs/arm" LDFLAGS='-L/crossrootfs/arm/lib -L/crossrootfs/arm/usr/lib/arm-linux-gnueabihf'
 
       steps:
       - checkout: self
@@ -81,23 +87,14 @@ jobs:
           displayName: Install native dependencies
 
       - ${{ if eq(parameters.osGroup, 'macOS') }}:
-        # use cmake from Brew (that may be different)
-        - script:  sed -i .ORI '/cmake/d'  global.json
-          displayName: Remove cmake for macOS
-        - script: gem install fpm
+        - script: sudo gem install fpm
           displayName: Install fpm
 
-      - script: $(_buildScript)
-                -ci
-                -c $(_BuildConfig)
-                $(_testBuildArg)
-                $(_signingArgs)
-                $(_officialBuildArgs)
-                /p:TargetPlatform=${{ parameters.archType }}
-        displayName: Build and Publish
+      - script: $(_crossBuild) $(_buildScript) $(_buildargs)
+        displayName: Build binaries
 
       - ${{ if ne(parameters.osGroup, 'Windows') }}:
-        - script: ./scripts/make-packages.sh -output $(_outputPath)
+        - script: ./scripts/make-packages.sh -arch ${{ parameters.archType }} -config $(_BuildConfig) -output $(_outputPath)
           displayName: Make Unix packages
           workingDirectory: src/msquic
 

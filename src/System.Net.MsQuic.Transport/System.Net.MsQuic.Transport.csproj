@@ -14,27 +14,31 @@
     <Target Name="_AddBuildOutputToPackageCore" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
         <ItemGroup>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x86_Release_schannel\msquic.dll"
+                Include="..\msquic\artifacts\bin\windows\x86_$(Configuration)_schannel\msquic.dll"
                 PackagePath="runtimes/win10-x86/native/"/>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x86_Release_schannel\msquic.pdb"
+                Include="..\msquic\artifacts\bin\windows\x86_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x86/native/"/>
 
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.dll"
+                Include="..\msquic\artifacts\bin\windows\x64_$(Configuration)_schannel\msquic.dll"
                 PackagePath="runtimes/win10-x64/native/"/>
             <TfmSpecificPackageFile
-                Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.pdb"
+                Include="..\msquic\artifacts\bin\windows\x64_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x64/native/"/>
         </ItemGroup>
     </Target>
 
+    <PropertyGroup>
+    <ExtraMsquicArgs Condition="'$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64'">-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
+    </PropertyGroup>
     <Target Name="Build-native" AfterTargets="Build">
-        <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x64 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+        <Exec IgnoreStandardErrorWarningFormat="true"
+            Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic"/>
+        <!-- Legacy reasons. Should be fixed.  -->
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
-            WorkingDirectory="../msquic"/>
+            Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
     </Target>
 </Project>
