@@ -70,7 +70,7 @@ stages:
       runTests: false
       container: 
         registry: mcr
-        image: ubuntu-18.04-msquic-20210813173420-e5ef247
+        image: ubuntu-18.04
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
@@ -96,7 +96,7 @@ stages:
           demands: ImageOverride -equals build.ubuntu.1804.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
-        image: ubuntu-18.04-cross-arm64-20220813000503-6e40d49
+        image: ubuntu-18.04-cross-arm64
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
@@ -114,7 +114,7 @@ stages:
           demands: ImageOverride -equals build.ubuntu.1804.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
-        image: ubuntu-18.04-cross-arm-20220813000503-6e40d49
+        image: ubuntu-18.04-cross-arm
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
