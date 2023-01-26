@@ -70,15 +70,15 @@ stages:
       runTests: false
       container: 
         registry: mcr
-        image: ubuntu-18.04
+        image: ubuntu-20.04
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals Build.Ubuntu.1804.Amd64
+          demands: ImageOverride -equals Build.Ubuntu.2004.Amd64
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          vmImage: 'ubuntu-18.04'
+          vmImage: 'ubuntu-20.04'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
@@ -93,10 +93,10 @@ stages:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals build.ubuntu.1804.amd64
+          demands: ImageOverride -equals build.ubuntu.2004.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
-        image: ubuntu-18.04-cross-arm64
+        image: ubuntu-20.04-cross-arm64
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
@@ -111,10 +111,10 @@ stages:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals build.ubuntu.1804.amd64
+          demands: ImageOverride -equals build.ubuntu.2004.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
-        image: ubuntu-18.04-cross-arm
+        image: ubuntu-20.04-cross-arm
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
