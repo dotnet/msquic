@@ -61,7 +61,7 @@ stages:
           demands: ImageOverride -equals '1es-windows-2019'
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          vmImage: '1es-windows-2019'
+          vmImage: '1es-windows-2019-open'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
