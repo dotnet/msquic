@@ -58,10 +58,10 @@ stages:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019
+          demands: ImageOverride -equals '1es-windows-2019'
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          vmImage: 'windows-latest'
+          vmImage: '1es-windows-2019'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
