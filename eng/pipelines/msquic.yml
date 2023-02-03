@@ -58,7 +58,7 @@ stages:
         isOfficialBuild: true
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals '1es-windows-2019'
+          demands: ImageOverride -equals 'windows.vs2022.amd64'
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
           name: NetCore-Public
