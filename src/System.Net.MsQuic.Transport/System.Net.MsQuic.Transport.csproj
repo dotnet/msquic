@@ -32,15 +32,27 @@
                 Include="..\msquic\artifacts\bin\windows\x64_Release_schannel\msquic.pdb"
                 IsNative="true"
                 PackagePath="runtimes/win-x64/native/"/>
+
+            <TfmSpecificPackageFile
+                Include="..\msquic\artifacts\bin\windows\arm64_Release_schannel\msquic.dll"
+                IsNative="true"
+                PackagePath="runtimes/win-x64/native/"/>
+            <TfmSpecificPackageFile
+                Include="..\msquic\artifacts\bin\windows\arm64_Release_schannel\msquic.pdb"
+                IsNative="true"
+                PackagePath="runtimes/win-arm64/native/"/>
         </ItemGroup>
     </Target>
 
     <Target Name="Build-native" AfterTargets="Build">
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x64"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch x64 -DisableTest -DisableTools -DisablePerf"
             WorkingDirectory="../msquic"/>
         <Exec
-            Command="pwsh scripts/build.ps1 -Config Release -Arch x86"
+            Command="pwsh scripts/build.ps1 -Config Release -Arch x86 -DisableTest -DisableTools -DisablePerf"
+            WorkingDirectory="../msquic"/>
+        <Exec
+            Command="pwsh scripts/build.ps1 -Config Release -Arch arm64 -DisableTest -DisableTools -DisablePerf"
             WorkingDirectory="../msquic"/>
     </Target>
 </Project>
