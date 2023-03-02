@@ -46,9 +46,6 @@ jobs:
       variables:
         - _buildScript: build.cmd
 
-        - ${{ if eq(parameters.osGroup, 'Windows') }}:
-          - script: pwsh -command systeminfo
-
         - ${{ if ne(parameters.osGroup, 'Windows') }}:
           - _buildScript: ./build.sh
           - _outputPath: $(Build.SourcesDirectory)/artifacts/packages/${{ parameters.osGroup }}/${{ parameters.archType }}_$(_BuildConfig)_openssl
@@ -89,6 +86,8 @@ jobs:
       - ${{ if eq(parameters.osGroup, 'Windows') }}:
         - script: $(Build.SourcesDirectory)\eng\common\init-tools-native.cmd -InstallDirectory $(Build.SourcesDirectory)\native-tools -Force
           displayName: Install native dependencies
+        - script: pwsh -command systeminfo
+
 
       - ${{ if eq(parameters.osGroup, 'macOS') }}:
         - script: sudo gem install fpm
