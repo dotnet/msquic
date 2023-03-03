@@ -29,9 +29,6 @@ jobs:
         matrix:
           Release:
             _BuildConfig: Release
-          ${{ if eq(parameters.isOfficialBuild, false) }}:
-            Debug:
-              _BuildConfig: Debug
 
       ${{ if eq(parameters.runTests, true) }}:
         testResultsFormat: vstest
