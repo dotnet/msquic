@@ -29,10 +29,10 @@
 
             <TfmSpecificPackageFile
                 Include="..\msquic\artifacts\bin\windows\arm64_$(Configuration)_schannel\msquic.dll"
-                PackagePath="runtimes/win10-x64/native/"/>
+                PackagePath="runtimes/win10-arm64/native/"/>
             <TfmSpecificPackageFile
                 Include="..\msquic\artifacts\bin\windows\arm64_$(Configuration)_schannel\msquic.pdb"
-                PackagePath="runtimes/win10-x64/native/"/>
+                PackagePath="runtimes/win10-arm64/native/"/>
         </ItemGroup>
     </Target>
 
