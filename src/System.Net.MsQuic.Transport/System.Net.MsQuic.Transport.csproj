@@ -26,6 +26,13 @@
             <TfmSpecificPackageFile
                 Include="..\msquic\artifacts\bin\windows\x64_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-x64/native/"/>
+
+            <TfmSpecificPackageFile
+                Include="..\msquic\artifacts\bin\windows\arm64_$(Configuration)_schannel\msquic.dll"
+                PackagePath="runtimes/win10-arm64/native/"/>
+            <TfmSpecificPackageFile
+                Include="..\msquic\artifacts\bin\windows\arm64_$(Configuration)_schannel\msquic.pdb"
+                PackagePath="runtimes/win10-arm64/native/"/>
         </ItemGroup>
     </Target>
 
@@ -39,6 +46,9 @@
         <!-- Legacy reasons. Should be fixed.  -->
         <Exec
             Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+            WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
+        <Exec
+            Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch arm64 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
     </Target>
 </Project>
