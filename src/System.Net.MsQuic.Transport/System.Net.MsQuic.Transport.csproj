@@ -7,6 +7,7 @@
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     </PropertyGroup>
 
+<!--
     <PropertyGroup>
         <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddBuildOutputToPackageCore</TargetsForTfmSpecificContentInPackage>
     </PropertyGroup>
@@ -33,22 +34,37 @@
             <TfmSpecificPackageFile
                 Include="..\msquic\artifacts\bin\windows\arm64_$(Configuration)_schannel\msquic.pdb"
                 PackagePath="runtimes/win10-arm64/native/"/>
+
+            <TfmSpecificPackageFile
+                Include="..\msquic\artifacts\bin\macos\x64_$(Configuration)_openssl\libmsquic.2.dylib"
+                PackagePath="runtimes/osx-x64/native/"/>
         </ItemGroup>
     </Target>
+-->
+
+  <ItemGroup Condition="'$(IsPartialFacadeAssembly)' != 'true'">
+    <!-- Just reference the runtime packages but don't build them in order to avoid unintentional Build/Pack invocations. -->
+    <ProjectReference Include="pkg\runtime.native.$(MSBuildProjectName).proj" BuildReference="false" />
+    <!-- Make the runtime specific packages non transitive so that they aren't flowing into other projects. -->
+    <ProjectReference Include="pkg\runtime.*.runtime.native.$(MSBuildProjectName).proj" BuildReference="false" PrivateAssets="all" />
+  </ItemGroup>
 
     <PropertyGroup>
     <ExtraMsquicArgs Condition="'$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64'">-SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
     </PropertyGroup>
+
     <Target Name="Build-native" AfterTargets="Build">
         <Exec IgnoreStandardErrorWarningFormat="true"
             Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic"/>
         <!-- Legacy reasons. Should be fixed.  -->
+        <!--
         <Exec
             Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch x86 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
         <Exec
             Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch arm64 $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
             WorkingDirectory="../msquic" Condition="'$(TargetOS)' == 'windows'"/>
+        -->
     </Target>
 </Project>

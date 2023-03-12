@@ -66,6 +66,36 @@ stages:
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
+      osGroup: Windows
+      archType: x86
+      runTests: false
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
+        pool:
+          name: NetCore1ESPool-Internal
+          demands: ImageOverride -equals 1es-windows-2019
+      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        pool:
+          name: NetCore-Public
+          demands: ImageOverride -equals 1es-windows-2019-open
+
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
+      osGroup: Windows
+      archType: arm64
+      runTests: false
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
+        pool:
+          name: NetCore1ESPool-Internal
+          demands: ImageOverride -equals 1es-windows-2019
+      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        pool:
+          name: NetCore-Public
+          demands: ImageOverride -equals 1es-windows-2019-open
+
+  - template: /eng/pipelines/templates/build-job.yml
+    parameters:
       osGroup: Linux
       archType: x64
       runTests: false
