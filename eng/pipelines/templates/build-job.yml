@@ -70,10 +70,11 @@ jobs:
                             /p:DotNetSignType=$(_SignType)
         - _crossBuild: ''
         - _buildargs: -ci -c $(_BuildConfig) $(_testBuildArg) $(_signingArgs) $(_officialBuildArgs) /p:TargetArchitecture=${{ parameters.archType }}
-        - ${{ if eq(parameters.archType, 'arm64') }}:
-          - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=aarch64-linux-gnu --sysroot=/crossrootfs/arm64" LDFLAGS='-L/crossrootfs/arm64/lib -L/crossrootfs/arm64/usr/lib/aarch64-linux-gnu'
-        - ${{ if eq(parameters.archType, 'arm') }}:
-          - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=arm-linux-gnueabihf --sysroot=/crossrootfs/arm" LDFLAGS='-L/crossrootfs/arm/lib -L/crossrootfs/arm/usr/lib/arm-linux-gnueabihf'
+        - ${{ if eq(parameters.osGroup, 'Linux') }}:
+          - ${{ if eq(parameters.archType, 'arm64') }}:
+            - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=aarch64-linux-gnu --sysroot=/crossrootfs/arm64" LDFLAGS='-L/crossrootfs/arm64/lib -L/crossrootfs/arm64/usr/lib/aarch64-linux-gnu'
+          - ${{ if eq(parameters.archType, 'arm') }}:
+            - _crossBuild: CC=clang-9 CXX=clang++-9 CFLAGS="--target=arm-linux-gnueabihf --sysroot=/crossrootfs/arm" LDFLAGS='-L/crossrootfs/arm/lib -L/crossrootfs/arm/usr/lib/arm-linux-gnueabihf'
 
       steps:
       - checkout: self
