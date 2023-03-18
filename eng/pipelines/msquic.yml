@@ -155,11 +155,26 @@ stages:
       pool:
         vmImage: 'macOS-10.15'
 
-# Publish and validation steps. Only run in official builds
-- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  - template: \eng\common\templates\post-build\post-build.yml
+  - template: /eng/common/templates/job/publish-build-assets.yml
     parameters:
-      publishingInfraVersion: 3
-      validateDependsOn:
-        - build
-      enableSourceLinkValidation: true
+      configuration: Release
+      dependsOn: Sign_Package_Publish
+      publishUsingPipelines: true
+      pool:
+        name: NetCore1ESPool-Internal
+        demands: ImageOverride -equals windows.vs2022.amd64
+
+ # Publish and validation steps. Only run in official builds
+ - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - stage: Publish
+    dependsOn:
+    - Build
+    jobs:
+    - template: /eng/common/templates/job/publish-build-assets.yml
+      parameters:
+        publishUsingPipelines: true
+        publishAssetsImmediately: true
+        pool:
+          ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+            name: $(DncEngInternalBuildPool)
+            demands: ImageOverride -equals windows.vs2022.amd64

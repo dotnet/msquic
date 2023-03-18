@@ -9,13 +9,13 @@ parameters:
 
 jobs:
 
-- template: /eng/common/templates/jobs/jobs.yml
+- template: /eng/common/templates/job/job.yml
   parameters:
     enableTelemetry: true
     helixRepo: dotnet/msquic
     pool: ${{ parameters.pool }}
     enablePublishBuildArtifacts: true
-    enablePublishBuildAssets: ${{ eq(parameters.osGroup, 'Windows') }}
+    enablePublishBuildAssets: ${{ parameters.isOfficialBuild }}
     enablePublishUsingPipelines: true
     enableMicrobuild: true
     graphFileGeneration:
