@@ -44,6 +44,7 @@ pr:
 variables:
   - name: _TeamName
     value: dotnet-core
+  - template: /eng/common/templates/variables/pool-providers.yml
 
 stages:
 - stage: build
@@ -57,11 +58,11 @@ stages:
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals 1es-windows-2019
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          name: NetCore-Public
+          name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals 1es-windows-2019-open
 
   - template: /eng/pipelines/templates/build-job.yml
@@ -72,11 +73,11 @@ stages:
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals 1es-windows-2019
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          name: NetCore-Public
+          name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals 1es-windows-2019-open
 
   - template: /eng/pipelines/templates/build-job.yml
@@ -87,11 +88,11 @@ stages:
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals 1es-windows-2019
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          name: NetCore-Public
+          name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals 1es-windows-2019-open
 
   - template: /eng/pipelines/templates/build-job.yml
@@ -105,7 +106,7 @@ stages:
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals Build.Ubuntu.1804.Amd64
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
@@ -118,12 +119,12 @@ stages:
       runTests: false
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          name: NetCore-Public
+          name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals 1es-ubuntu-2004-open
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals build.ubuntu.1804.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
@@ -136,12 +137,12 @@ stages:
       runTests: false
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          name: NetCore-Public
+          name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals 1es-ubuntu-2004-open
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         isOfficialBuild: true
         pool:
-          name: NetCore1ESPool-Internal
+          name: $(DncEngInternalBuildPool)
           demands: ImageOverride -equals build.ubuntu.1804.amd64
       container:
         registry: mcr.microsoft.com/dotnet-buildtools/prereqs
@@ -153,13 +154,19 @@ stages:
       archType: x64
       runTests: false
       pool:
-        vmImage: 'macOS-10.15'
+        vmImage: 'macOS-11'
 
-# Publish and validation steps. Only run in official builds
+ # Publish and validation steps. Only run in official builds
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  - template: \eng\common\templates\post-build\post-build.yml
-    parameters:
-      publishingInfraVersion: 3
-      validateDependsOn:
-        - build
-      enableSourceLinkValidation: true
+  - stage: Publish
+    dependsOn:
+    - Build
+    jobs:
+    - template: /eng/common/templates/job/publish-build-assets.yml
+      parameters:
+        publishUsingPipelines: true
+        publishAssetsImmediately: true
+        pool:
+          ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+            name: $(DncEngInternalBuildPool)
+            demands: ImageOverride -equals windows.vs2022.amd64
