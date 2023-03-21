@@ -1,7 +1,6 @@
 <Project>
-  <Import Project="runtime.native.System.Net.MsQuic.Transport.props" />
   <PropertyGroup>
-    <!-- This is a native package, where package baseline validation doesn't really make much sense -->
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <TargetRid>win-x86</TargetRid>
   </PropertyGroup>
+  <Import Project="runtime.native.System.Net.MsQuic.Transport.props" />
 </Project>

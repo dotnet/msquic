@@ -9,6 +9,31 @@
     <_hostOS Condition="$([MSBuild]::IsOSPlatform('WINDOWS'))">windows</_hostOS>
     <HostOS>$(_hostOS)</HostOS>
     <TargetOS Condition="'$(TargetOS)' == ''">$(_hostOS)</TargetOS>
+
+    <_hostRid Condition="'$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</_hostRid>
+    <_hostRid Condition="'$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</_hostRid>
+    <_parseDistroRid>$(__DistroRid)</_parseDistroRid>
+    <_parseDistroRid Condition="'$(_parseDistroRid)' == ''">$(_hostRid)</_parseDistroRid>
+    <_distroRidIndex>$(_parseDistroRid.LastIndexOf('-'))</_distroRidIndex>
+
+    <_runtimeOS Condition="'$(_runtimeOS)' == ''">$(_parseDistroRid.SubString(0, $(_distroRidIndex)))</_runtimeOS>
+
+    <_portableOS>linux</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'linux-musl' or $(_runtimeOS.StartsWith('alpine'))">linux-musl</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'linux-bionic'">linux-bionic</_portableOS>
+    <_portableOS Condition="'$(_hostOS)' == 'osx'">osx</_portableOS>
+    <_portableOS Condition="$(_runtimeOS.StartsWith('win')) or '$(TargetOS)' == 'windows'">win</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'freebsd' or '$(TargetOS)' == 'freebsd'">freebsd</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'illumos' or '$(TargetOS)' == 'illumos'">illumos</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'solaris' or '$(TargetOS)' == 'solaris'">solaris</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'maccatalyst'">maccatalyst</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'ios'">ios</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'iossimulator'">iossimulator</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'tvos'">tvos</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'tvossimulator'">tvossimulator</_portableOS>
+    <_portableOS Condition="'$(_runtimeOS)' == 'android'">android</_portableOS>
+
+    <_runtimeOS>$(_portableOS)</_runtimeOS>
   </PropertyGroup>
 
   <PropertyGroup Label="CalculateArch">
@@ -27,6 +52,52 @@
     <Platform Condition="'$(Platform)' == '' and '$(InferPlatformFromTargetArchitecture)' == 'true'">$(TargetArchitecture)</Platform>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <_packageLibc Condition="$(TargetOS.Contains('musl'))">-musl</_packageLibc>
+    <_packageOS>$(_portableOS)$(_packageLibc)</_packageOS>
+    <PackageRID>$(_packageOS)-$(TargetArchitecture)</PackageRID>
+    <OutputRid Condition="'$(OutputRid)' == '' and '$(DotNetBuildFromSource)' == 'true'">$(_hostRid)</OutputRid>
+    <OutputRid Condition="'$(OutputRid)' == ''">$(PackageRID)</OutputRid>
+    <OutputRid Condition="'$(PortableBuild)' == 'true'">$(_portableOS)-$(TargetArchitecture)</OutputRid>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StaticLibPrefix>lib</StaticLibPrefix>
+    <ExeSuffix Condition="'$(HostOS)' == 'windows'">.exe</ExeSuffix>
+  </PropertyGroup>
+
+  <!-- Add path globs specific to native binaries to exclude unnecessary files from packages. -->
+  <Choose>
+    <When Condition="'$(TargetOS)' == 'windows'">
+      <PropertyGroup>
+        <LibSuffix>.dll</LibSuffix>
+        <StaticLibSuffix>.lib</StaticLibSuffix>
+        <SymbolsSuffix>.pdb</SymbolsSuffix>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetOS)' == 'OSX'">
+      <PropertyGroup>
+        <LibPrefix>lib</LibPrefix>
+        <LibSuffix>.dylib</LibSuffix>
+        <StaticLibSuffix>.a</StaticLibSuffix>
+        <SymbolsSuffix>.dwarf</SymbolsSuffix>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <LibPrefix>lib</LibPrefix>
+        <LibSuffix>.so</LibSuffix>
+        <StaticLibSuffix>.a</StaticLibSuffix>
+        <SymbolsSuffix>.dbg</SymbolsSuffix>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <ItemGroup>
+    <AdditionalLibPackageExcludes Condition="'$(SymbolsSuffix)' != ''" Include="%2A%2A\%2A$(SymbolsSuffix)" />
+    <AdditionalSymbolPackageExcludes Condition="'$(LibSuffix)' != ''" Include="%2A%2A\%2A.a;%2A%2A\%2A$(LibSuffix)" />
+  </ItemGroup>
+
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
@@ -36,7 +107,7 @@
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>Latest</LangVersion>
-    <IsPackable>true</IsPackable>
+    <IsShipping>false</IsShipping>
     <PreReleaseVersionLabel>alpha</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>1</PreReleaseVersionIteration>
 

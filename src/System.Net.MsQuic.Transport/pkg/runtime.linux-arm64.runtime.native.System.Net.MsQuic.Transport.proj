@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <TargetRid>win-x64</TargetRid>
+    <TargetRid>linux-arm64</TargetRid>
   </PropertyGroup>
   <Import Project="runtime.native.System.Net.MsQuic.Transport.props" />
 </Project>
