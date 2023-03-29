@@ -1,11 +1,11 @@
 <Project>
   <PropertyGroup Label="CalculateTargetOS">
-    <_hostOS>Linux</_hostOS>
-    <_hostOS Condition="$([MSBuild]::IsOSPlatform('OSX'))">OSX</_hostOS>
-    <_hostOS Condition="$([MSBuild]::IsOSPlatform('FREEBSD'))">FreeBSD</_hostOS>
-    <_hostOS Condition="$([MSBuild]::IsOSPlatform('NETBSD'))">NetBSD</_hostOS>
+    <_hostOS>linux</_hostOS>
+    <_hostOS Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx</_hostOS>
+    <_hostOS Condition="$([MSBuild]::IsOSPlatform('FREEBSD'))">freebsd</_hostOS>
+    <_hostOS Condition="$([MSBuild]::IsOSPlatform('NETBSD'))">netbsd</_hostOS>
     <_hostOS Condition="$([MSBuild]::IsOSPlatform('ILLUMOS'))">illumos</_hostOS>
-    <_hostOS Condition="$([MSBuild]::IsOSPlatform('SOLARIS'))">Solaris</_hostOS>
+    <_hostOS Condition="$([MSBuild]::IsOSPlatform('SOLARIS'))">solaris</_hostOS>
     <_hostOS Condition="$([MSBuild]::IsOSPlatform('WINDOWS'))">windows</_hostOS>
     <HostOS>$(_hostOS)</HostOS>
     <TargetOS Condition="'$(TargetOS)' == ''">$(_hostOS)</TargetOS>
