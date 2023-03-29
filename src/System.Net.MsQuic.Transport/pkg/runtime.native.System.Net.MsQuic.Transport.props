@@ -1,28 +1,45 @@
 <Project Sdk="Microsoft.Build.NoTargets">
   <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <!-- IncludeBuildOutput needs to be set to true to make NuGet include the passed in debug symbol files. -->
     <IncludeBuildOutput>true</IncludeBuildOutput>
-    <IsPackable>true</IsPackable>
-    <AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder>$(SymbolsSuffix)</AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder>
+    <IsPackable>false</IsPackable>
+    <IsPackable Condition="'$(OutputRid)' == '$(TargetRid)'">true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
     <!-- When KeepNativeSymbols is set, debug symbols are kept in the .so files.  Separate symbol files do not exist that need to be packed. -->
+    <!-- We don't strip symbols out of elf/macho images. -->
+    <KeepNativeSymbols Condition="'$(TargetOS)' != 'Windows'">true</KeepNativeSymbols>
     <TargetsForTfmSpecificDebugSymbolsInPackage Condition="'$(KeepNativeSymbols)' != 'true'">$(TargetsForTfmSpecificDebugSymbolsInPackage);AddRuntimeSpecificNativeSymbolToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
-    <UseRuntimePackageDisclaimer>true</UseRuntimePackageDisclaimer>
+    <AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder>$(SymbolsSuffix)</AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder>
     <!-- This is a native package and doesn't contain any ref/lib assets. -->
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <!-- Need to figure different configs -->
+    <TlsFlavor>openssl</TlsFlavor>
+    <TlsFlavor Condition="'$(TargetOS)' == 'Windows'">schannel</TlsFlavor>
+    <OsFolder>$(TargetOS)</OsFolder>
+    <OsFolder Condition="'$(TargetOS)' == 'osx'">macos</OsFolder>
+    <NativeBinDir>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'msquic', 'artifacts', 'bin', '$(OsFolder)', '$(TargetArchitecture)_$(Configuration)_$(TlsFlavor)'))</NativeBinDir>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(NativeBinDir)$(LibPrefix)System.Net.MsQuic.Transport.Native$(LibSuffix)"
-          PackagePath="runtimes/$(OutputRid)/native"
+    <None Include="$(NativeBinDir)$(LibPrefix)msquic$(LibSuffix)"
+          PackagePath="runtimes/$(TargetRid)/native"
           Pack="true" />
   </ItemGroup>
 
   <Target Name="AddRuntimeSpecificNativeSymbolToPackage">
+    <PropertyGroup>
+      <_SymbolFilePath>$([MSBuild]::NormalizePath('$(NativeBinDir)', '$(LibPrefix)msquic$(SymbolsSuffix)'))</_SymbolFilePath>
+    </PropertyGroup>
+
+    <Error Condition="!Exists('$(_SymbolFilePath)') and '$(KeepNativeSymbols)' != 'true'"
+          Text="Detached symbol file to package not found at: $(_SymbolFilePath)"/>
+
     <ItemGroup>
-      <TfmSpecificDebugSymbolsFile Include="$(NativeBinDir)$(LibPrefix)System.Net.MsQuic.Transport.Native$(LibSuffix)$(SymbolsSuffix)"
-                                   TargetPath="/runtimes/$(OutputRid)/native"
+      <TfmSpecificDebugSymbolsFile Include="$(NativeBinDir)$(LibPrefix)msquic$(SymbolsSuffix)"
+                                   TargetPath="/runtimes/$(TargetRid)/native"
                                    TargetFramework="$(TargetFramework)" />
     </ItemGroup>
   </Target>
