@@ -18,7 +18,9 @@
     <!-- Need to figure different configs -->
     <TlsFlavor>openssl</TlsFlavor>
     <TlsFlavor Condition="'$(TargetOS)' == 'Windows'">schannel</TlsFlavor>
-    <NativeBinDir>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'msquic', 'artifacts', 'bin', '$(TargetOS)', '$(TargetArchitecture)_$(Configuration)_$(TlsFlavor)'))</NativeBinDir>
+    <OsFolder>$(TargetOS)</OsFolder>
+    <OsFolder Condition="'$(TargetOS)' == 'osx'">macos</OsFolder>
+    <NativeBinDir>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'msquic', 'artifacts', 'bin', '$(OsFolder)', '$(TargetArchitecture)_$(Configuration)_$(TlsFlavor)'))</NativeBinDir>
   </PropertyGroup>
 
   <ItemGroup>
