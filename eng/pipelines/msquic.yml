@@ -155,6 +155,8 @@ stages:
       runTests: false
       pool:
         vmImage: 'macOS-11'
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        isOfficialBuild: true
 
  # Publish and validation steps. Only run in official builds
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
