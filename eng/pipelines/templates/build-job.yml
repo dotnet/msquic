@@ -53,12 +53,12 @@ jobs:
       - _officialBuildArgs: ''
       - _signingArgs: ''
       - ${{ if eq(parameters.isOfficialBuild, true) }}:
-        - group: DotNet-Symbol-Server-Pats
         - _SignType: real
         - _officialBuildArgs: -publish
                               /p:TeamName=$(_TeamName)
                               /p:OfficialBuildId=$(Build.BuildNumber)
                               /p:DotNetPublishUsingPipelines=true
+                              /p:AssetManifestFileName=msquic-${{ parameters.osGroup }}-${{ parameters.archType }}.xml
         - ${{ if eq(parameters.osGroup, 'Windows') }}:
           - _signingArgs: -sign
                           /p:DotNetSignType=$(_SignType)
