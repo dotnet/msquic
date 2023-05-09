@@ -27,6 +27,9 @@
     <None Include="$(NativeBinDir)$(LibPrefix)msquic$(LibSuffix)"
           PackagePath="runtimes/$(TargetRid)/native"
           Pack="true" />
+    <None Include="$(NativeBinDir)$(LibPrefix)msquic$(StaticLibSuffix)"
+          PackagePath="runtimes/$(TargetRid)/native"
+          Pack="true" />
   </ItemGroup>
 
   <Target Name="AddRuntimeSpecificNativeSymbolToPackage">
