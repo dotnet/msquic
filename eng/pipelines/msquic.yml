@@ -110,7 +110,7 @@ stages:
           demands: ImageOverride -equals Build.Ubuntu.1804.Amd64
       ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
         pool:
-          vmImage: 'ubuntu-18.04'
+          vmImage: 'ubuntu-20.04'
 
   - template: /eng/pipelines/templates/build-job.yml
     parameters:
