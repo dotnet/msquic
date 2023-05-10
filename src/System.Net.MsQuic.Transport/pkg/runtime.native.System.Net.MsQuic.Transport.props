@@ -29,6 +29,7 @@
           Pack="true" />
     <None Include="$(NativeBinDir)$(LibPrefix)msquic$(StaticLibSuffix)"
           PackagePath="runtimes/$(TargetRid)/native"
+          Condition="'$(TargetOS)' == 'Windows'"
           Pack="true" />
   </ItemGroup>
 
