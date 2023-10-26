@@ -78,6 +78,12 @@ jobs:
       - script: sudo gem install fpm
         displayName: Install fpm
 
+    - ${{ if eq(parameters.osGroup, 'Windows') }}:
+      - script: |
+           mkdir src\msquic\artifact\xdp
+           xcopy /s /y src\xdp\* src\msquic\artifact\xdp
+        displayName: Install xdp
+
     - script: $(_crossBuild) $(_buildScript) $(_buildargs)
       displayName: Build binaries
 
