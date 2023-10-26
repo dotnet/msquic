@@ -80,8 +80,8 @@ jobs:
 
     - ${{ if eq(parameters.osGroup, 'Windows') }}:
       - script: |
-           mkdir src\msquic\artifact\xdp
-           xcopy /s /y src\xdp\* src\msquic\artifact\xdp
+           mkdir src\msquic\artifacts\xdp
+           xcopy /s /y src\xdp\* src\msquic\artifacts\xdp
         displayName: Install xdp
 
     - script: $(_crossBuild) $(_buildScript) $(_buildargs)
