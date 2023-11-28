@@ -1,5 +1,0 @@
-<Project>
-  <ItemGroup>
-    <ProjectToBuild Include="$(RepoRoot)src\System.Net.MsQuic.Transport\System.Net.MsQuic.Transport.proj" />
-  </ItemGroup>
-</Project>
