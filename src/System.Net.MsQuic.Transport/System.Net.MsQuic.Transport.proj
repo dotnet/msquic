@@ -1,38 +1,40 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <IncludeBuildOutput>true</IncludeBuildOutput>
-        <IsPackable>false</IsPackable>
-        <IsPackable Condition="'$(OutputRid)' == 'win-x64'">true</IsPackable>
-        <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
-        <NoTargetsDoNotReferenceOutputAssemblies>false</NoTargetsDoNotReferenceOutputAssemblies>
-        <!-- This is a meta package and doesn't contain any libs. -->
-        <NoWarn>$(NoWarn);NU5128</NoWarn>
-    </PropertyGroup>
 
-    <ItemGroup>
-        <!-- Make the runtime specific packages non transitive so that they aren't flowing into other projects. -->
-        <ProjectReference Include="$(MSBuildThisFileDirectory)\pkg\*.proj" Exclude="$(MSBuildProjectFile)" BuildReference="false" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+    <IsPackable>false</IsPackable>
+    <IsPackable Condition="'$(OutputRid)' == 'win-x64'">true</IsPackable>
+    <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+    <NoTargetsDoNotReferenceOutputAssemblies>false</NoTargetsDoNotReferenceOutputAssemblies>
+    <!-- This is a meta package and doesn't contain any libs. -->
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
 
-    <PropertyGroup>
-      <ExtraMsquicArgs Condition="'$(TargetOS)' == 'Linux' and ('$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64')">$(ExtraMsquicArgs) -SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
-    </PropertyGroup>
+  <ItemGroup>
+    <!-- Make the runtime specific packages non transitive so that they aren't flowing into other projects. -->
+    <ProjectReference Include="$(MSBuildThisFileDirectory)\pkg\*.proj" BuildReference="false" />
+  </ItemGroup>
 
-    <Target Name="Build-native" BeforeTargets="Build">
-        <Exec IgnoreStandardErrorWarningFormat="true"
-            Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
-            WorkingDirectory="../msquic"/>
-        <Exec IgnoreStandardErrorWarningFormat="true"
-            Command="pwsh scripts/build.ps1 -Static -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTest -DisablePerf"
-            WorkingDirectory="../msquic"
-            Condition="'$(TargetOS)' == 'Windows'"/>
-    </Target>
+  <PropertyGroup>
+    <ExtraMsquicArgs Condition="'$(TargetOS)' == 'Linux' and ('$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64')">$(ExtraMsquicArgs) -SysRoot /crossrootfs/$(TargetArchitecture)</ExtraMsquicArgs>
+  </PropertyGroup>
 
-    <Target Name="PackRidSpecificPackages"
+  <Target Name="Build-native" BeforeTargets="Build">
+    <Exec IgnoreStandardErrorWarningFormat="true"
+          Command="pwsh scripts/build.ps1 -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTools -DisableTest -DisablePerf"
+          WorkingDirectory="../msquic"/>
+    <Exec IgnoreStandardErrorWarningFormat="true"
+          Command="pwsh scripts/build.ps1 -Static -Config $(Configuration) -Arch $(TargetArchitecture) $(ExtraMsquicArgs) -UseSystemOpenSSLCrypto -DisableTest -DisablePerf"
+          WorkingDirectory="../msquic"
+          Condition="'$(TargetOS)' == 'Windows'"/>
+  </Target>
+
+  <Target Name="PackRidSpecificPackages"
           AfterTargets="Pack">
-        <MSBuild Targets="Pack"
-            Projects="@(ProjectReference)"
-            Properties="$(TraversalGlobalProperties)" />
-    </Target>
+    <MSBuild Targets="Pack"
+             Projects="@(ProjectReference)"
+             Properties="$(TraversalGlobalProperties)" />
+  </Target>
+
 </Project>

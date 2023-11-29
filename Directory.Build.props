@@ -1,4 +1,17 @@
 <Project>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+
+  <PropertyGroup>
+    <Copyright>$(CopyrightNetFoundation)</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <LangVersion>Latest</LangVersion>
+    <IsShipping>false</IsShipping>
+  </PropertyGroup>
+
   <PropertyGroup Label="CalculateTargetOS">
     <_hostOS>linux</_hostOS>
     <_hostOS Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx</_hostOS>
@@ -49,7 +62,7 @@
     <TargetArchitecture Condition="'$(TargetArchitecture)' == '' and ('$(TargetOS)' == 'Browser' or '$(RuntimeIdentifier)' == 'browser-wasm')">wasm</TargetArchitecture>
     <TargetArchitecture Condition="'$(TargetArchitecture)' == '' and '$(TargetsMobile)' == 'true'">x64</TargetArchitecture>
     <TargetArchitecture Condition="'$(TargetArchitecture)' == ''">x64</TargetArchitecture>
-    <Platform Condition="'$(Platform)' == '' and '$(InferPlatformFromTargetArchitecture)' == 'true'">$(TargetArchitecture)</Platform>
+    <Platform Condition="'$(Platform)' == ''">$(TargetArchitecture)</Platform>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -98,34 +111,4 @@
     <AdditionalSymbolPackageExcludes Condition="'$(LibSuffix)' != ''" Include="%2A%2A\%2A.a;%2A%2A\%2A$(LibSuffix)" />
   </ItemGroup>
 
-  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
-
-  <PropertyGroup>
-    <Copyright>$(CopyrightNetFoundation)</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <DebugType>embedded</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <LangVersion>Latest</LangVersion>
-    <IsShipping>false</IsShipping>
-    <PreReleaseVersionLabel>alpha</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration>1</PreReleaseVersionIteration>
-
-    <!-- Set this property to false if you don't want to use the runtime
-          framework version defined in Versions.props -->
-    <UseCustomRuntimeVersion>false</UseCustomRuntimeVersion>
-    <RuntimeFrameworkVersion Condition="$(UseCustomRuntimeVersion)">$(MicrosoftNETCoreAppRuntimewinx64Version)</RuntimeFrameworkVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
-    <IsPackable>false</IsPackable>
-    <TestCaptureOutput>false</TestCaptureOutput>
-    <TargetPlatform Condition="'$(TargetPlatform)' == ''">x64</TargetPlatform>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkVersion)" PrivateAssets="true" />
-    <PackageReference Update="xunit" Version="$(XunitVersion)" />
-    <PackageReference Update="xunit.runner.visualstudio" Version="$(XUnitRunnerVisualStudioVersion)" PrivateAssets="all" />
-  </ItemGroup>
 </Project>
