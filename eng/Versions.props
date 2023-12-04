@@ -1,9 +1,9 @@
 <Project>
   <PropertyGroup>
     <!-- The .NET product branding version -->
-    <ProductVersion>8.0.0</ProductVersion>
+    <ProductVersion>9.0.0</ProductVersion>
     <!-- File version numbers -->
-    <MajorVersion>8</MajorVersion>
+    <MajorVersion>9</MajorVersion>
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>alpha</PreReleaseVersionLabel>
