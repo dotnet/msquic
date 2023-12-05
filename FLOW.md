@@ -1,13 +1,16 @@
 
-[This](https://github.com/microsoft/msquic) repo is thin wrapper around https://github.com/microsoft/msquic . Main reason is packaging and release management so .NET runtime. 
-At this moment, there are two branches:
--	Release/6.0 to supply MsQuic for .NET 6.0 release. (msquic 1.7)
--	Main branch to pick up feature work and general improvements to feed main branch of runtime (msquic 1.8)
+[This](https://github.com/dotnet/msquic) repo is a thin wrapper around https://github.com/microsoft/msquic . It is used to produce a package for _testing_ purposes, when an official MsQuic package is not available.
+At this moment, there are two main use cases:
+- Consuming latest MsQuic main to pick up feature work and general improvements to feed main branch of runtime,
+- Building the package to test on Linux distros that don't have an official package yet (such as Alpine).
 
-In both cases, the build will create signed NuGet packages to be consumed by Windows and unsigned Linux packages. 
-Neither one is meant for direct consumption. Windows package is consumed by .NET runtime and msquic.dll is part of runtime distribution on Windows.
-For Linux, there is currently no automated workflow. Signed packages are manually published on https://packages.microsoft.com/. Linux users should use packages from there either directly or via their package manager. 
+The build will create signed NuGet packages to be consumed by Windows and unsigned Linux and MacOS packages. Neither of them are meant for direct consumption.
 
+On Windows, release versions of .NET use official MsQuic packages that are published to [NuGet](https://www.nuget.org/packages/Microsoft.Native.Quic.MsQuic.Schannel). Windows package is consumed by .NET runtime and `msquic.dll` is part of runtime distribution on Windows. In order to switch to the private package within the dotnet/runtime repo, you need to change the value of the [UseQuicTransportPackage](https://github.com/dotnet/runtime/blob/0c513d95c181159f3ea02531c7901ce15503f3ee/src/libraries/System.Net.Quic/src/System.Net.Quic.csproj#L20) flag to `true`.
+
+For Linux, there is currently no automated workflow. Signed packages are published on https://packages.microsoft.com/. Linux users should use packages from there either directly or via their package manager. 
+
+For more info, see [System.Net.Quic readme](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Quic/readme.md).
 
 **Build & Updates**
 
@@ -26,7 +29,7 @@ git add src/msquic
 ```
 At this point, full build is recommended and changes should be staged for PR. You can use `git log` to check whether msquic has changed. Also GitHub UI shows the actual changes instead of just updated directory like the command line tool. 
 
-When changes are submitted, official build will kick in and it will produce updated NuGet package. To see the latest package and its history look at https://dev.azure.com/dnceng/public/_packaging?_a=package&feed=dotnet6-transport&package=System.Net.MsQuic.Transport
+When changes are submitted, official build will kick in and it will produce updated NuGet package. To see the latest package and its history look at https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet9-transport/NuGet/System.Net.MsQuic.Transport
 
 The packages _should_ flow to runtime repo via DARC e.g. there should eventually be maestro PR to updated reference. 
 It is also always possible to update the runtime directly with change similar to https://github.com/dotnet/runtime/pull/57541

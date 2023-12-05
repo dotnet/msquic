@@ -1,6 +1,8 @@
 # MsQuic for .NET
 
-This repo contains sources for the MsQuic private transport package which lights up HTTP/3 support in .NET.
+This repo contains sources for the MsQuic private transport package which lights up QUIC and HTTP/3 support in .NET.
+
+The package is only intended for _testing_ purposes, for the cases where official MsQuic package is not available.
 
 ## Building
 
