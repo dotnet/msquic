@@ -1,5 +1,5 @@
 
-[This](https://github.com/microsoft/msquic) repo is a thin wrapper around https://github.com/microsoft/msquic . It is used to produce a package for _testing_ purposes, when official MsQuic package is not available.
+[This](https://github.com/dotnet/msquic) repo is a thin wrapper around https://github.com/microsoft/msquic . It is used to produce a package for _testing_ purposes, when an official MsQuic package is not available.
 At this moment, there are two main use cases:
 - Consuming latest MsQuic main to pick up feature work and general improvements to feed main branch of runtime,
 - Building the package to test on Linux distros that don't have an official package yet (such as Alpine).
