@@ -29,7 +29,7 @@ git add src/msquic
 ```
 At this point, full build is recommended and changes should be staged for PR. You can use `git log` to check whether msquic has changed. Also GitHub UI shows the actual changes instead of just updated directory like the command line tool. 
 
-When changes are submitted, official build will kick in and it will produce updated NuGet package. To see the latest package and its history look at https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet8-transport/NuGet/System.Net.MsQuic.Transport
+When changes are submitted, official build will kick in and it will produce updated NuGet package. To see the latest package and its history look at https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet9-transport/NuGet/System.Net.MsQuic.Transport
 
 The packages _should_ flow to runtime repo via DARC e.g. there should eventually be maestro PR to updated reference. 
 It is also always possible to update the runtime directly with change similar to https://github.com/dotnet/runtime/pull/57541
