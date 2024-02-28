@@ -77,7 +77,7 @@ jobs:
       - script: |
            git submodule  update --init --depth 1
            cd src/msquic
-           git submodule  update --init --init --depth 1 submodules/clog submodules/openssl submodules/openssl3
+           git submodule  update --init --init --depth 1
         displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'Windows') }}:
@@ -85,7 +85,6 @@ jobs:
            git submodule  update --init --depth 1
            cd src\msquic
            git submodule update --init --depth 1
-           cd ..
         displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'macOS') }}:
@@ -96,8 +95,6 @@ jobs:
       - script: |
            mkdir src\msquic\artifacts\xdp
            xcopy /s /y src\xdp\* src\msquic\artifacts\xdp
-           dir src\msquic
-           dir src\msquic\artifacts\xdp
         displayName: Install xdp
 
     - script: $(_crossBuild) $(_buildScript) $(_buildargs)
