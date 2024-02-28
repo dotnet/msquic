@@ -72,8 +72,20 @@ jobs:
 
     steps:
     - checkout: self
-    - script: git submodule  update --init
-    - script: (cd src/msquic ; git submodule  update --init)
+
+    - ${{ if ne(parameters.osGroup, 'Windows') }}:
+      - script: |
+           git submodule  update --init --depth 1
+           cd src/msquic
+           git submodule  update --init --init --depth 1 clog openssl openssl3
+        displayName: Checkout submodules
+
+    - ${{ if eq(parameters.osGroup, 'Windows') }}:
+      - script: |
+           git submodule  update --init --depth 1
+           cd src\msquic
+           git submodule  update --init --init --depth 1 clog openssl openssl3 --init --depth 1
+        displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'macOS') }}:
       - script: sudo gem install fpm
