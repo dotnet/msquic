@@ -73,19 +73,11 @@ jobs:
     steps:
     - checkout: self
 
-    - ${{ if ne(parameters.osGroup, 'Windows') }}:
-      - script: |
-           git submodule  update --init --depth 1
-           cd src/msquic
-           git submodule  update --init --init --depth 1
-        displayName: Checkout submodules
-
-    - ${{ if eq(parameters.osGroup, 'Windows') }}:
-      - script: |
-           git submodule  update --init --depth 1
-           cd src\msquic
-           git submodule update --init --depth 1
-        displayName: Checkout submodules
+    - script: |
+         git submodule update --init --depth 1
+         cd src/msquic
+         git submodule update --init --depth 1
+      displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'macOS') }}:
       - script: sudo gem install fpm
