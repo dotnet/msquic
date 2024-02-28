@@ -77,14 +77,14 @@ jobs:
       - script: |
            git submodule  update --init --depth 1
            cd src/msquic
-           git submodule  update --init --init --depth 1 clog openssl openssl3
+           git submodule  update --init --init --depth 1 submodules/clog submodules/openssl submodules/openssl3
         displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'Windows') }}:
       - script: |
            git submodule  update --init --depth 1
            cd src\msquic
-           git submodule  update --init --init --depth 1 clog openssl openssl3 --init --depth 1
+           git submodule  update --init --init --depth 1 submodules/clog submodules/openssl submodules/openssl3 --init --depth 1
         displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'macOS') }}:
