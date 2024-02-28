@@ -72,7 +72,12 @@ jobs:
 
     steps:
     - checkout: self
-      submodules: recursive
+
+    - script: |
+         git submodule update --init --depth 1
+         cd src/msquic
+         git submodule update --init --depth 1
+      displayName: Checkout submodules
 
     - ${{ if eq(parameters.osGroup, 'macOS') }}:
       - script: sudo gem install fpm
