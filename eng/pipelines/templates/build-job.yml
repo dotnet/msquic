@@ -84,7 +84,7 @@ jobs:
       - script: |
            git submodule  update --init --depth 1
            cd src\msquic
-           git submodule update --init --depth 1 submodules/clog
+           git submodule update --init --depth 1
            cd ..
         displayName: Checkout submodules
 
