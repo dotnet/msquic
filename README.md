@@ -6,7 +6,7 @@ The package is only intended for _testing_ purposes, for the cases where officia
 
 ## Building
 
-- Clone the repo recursively (`git clone --recursively`) or run `git submodule update --init --recursive` to get all the submodules.
+- Clone the repo recursively (`git clone --recursive`) or run `git submodule update --init --recursive` to get all the submodules.
 - Run `build.cmd`
 
 ## .NET Foundation
